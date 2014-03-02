@@ -1,12 +1,11 @@
 ================================================================
 Weak Bases - an encoding of Post's lattice in Prolog.
 Release 1.0 
+================================================================
 
 Copyright (c) 2014  Victor Lagerkvist. All Rights Reserved.
 Weak Bases is free software. You can redistribute it and/or
 modify it under the terms of the simplified BSD license.
-================================================================
-
 
 CONTENTS
 
@@ -54,7 +53,7 @@ but it can also be used for queries about the inclusion structure of
 the lattice, such as finding the smallest co-clone of a given
 relation.
 
-3. VERDI NERUDA WEB SITE
+3. WEAK BASES WEB SITE
 
 Visit the Weak Bases GitHub page at:
 https://github.com/Joelbyte/weak-bases.
