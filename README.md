@@ -1,5 +1,128 @@
-weak-bases
-==========
+================================================================
+Weak Bases - an encoding of Post's lattice in Prolog.
+Release 1.0 
 
-An encoding of the Boolean co-clone lattice in Prolog, with tools for
-constructing weak bases. More information to come later.
+Copyright (c) 2014  Victor Lagerkvist. All Rights Reserved.
+Weak Bases is free software. You can redistribute it and/or
+modify it under the terms of the simplified BSD license.
+================================================================
+
+
+CONTENTS
+
+ 1. License
+ 2. About
+ 3. Weak Bases web site
+ 4. Installation and running
+ 5. Examples
+ 6. Authors
+
+1. LICENSE
+
+Copyright 2014 Victor Lagerkvist. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+   1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY EXPRESS
+OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The views and conclusions contained in the software and documentation
+are those of the authors and should not be interpreted as representing
+official policies, either expressed or implied, of the copyright holders.
+
+2. ABOUT
+Weak Bases is an encoding of Post's lattice in Prolog, which main
+function is to calculate so called weak bases of a Boolean co-clone,
+but it can also be used for queries about the inclusion structure of
+the lattice, such as finding the smallest co-clone of a given
+relation.
+
+3. VERDI NERUDA WEB SITE
+
+Visit the Weak Bases GitHub page at:
+https://github.com/Joelbyte/weak-bases.
+
+4. INSTALLATION AND RUNNING
+
+Weak Bases requires Logtalk 2.40.0 or a later version.
+
+To use the latest version of Weak Bases, fetch the latest source
+code, either as an archive or from the git repository, extract it to
+a directory of your choice, and:
+
+* Start Logtalk from that directory.
+* Type {loader}. (Including '.').
+
+5. PROGRAM STRUCTURE
+The bulk of the program is spread across the two files relations.lgt
+and operators.lgt. As an Argus-eyed reader might guess from the file
+names the former contains predicates related (pun not intended) to
+relations while the latter contains predicates related to
+functions. More specifically relations.lgt consists of four important
+predicates:
+
+* relation/2. 
+* pol/2.
+* weak_base/2.
+* smallest_co_clone/2.
+
+relation(IC, R) is true if R is a base of the co-clone IC, where R is
+represented as a list of Boolean tuples. pol(IC, F) is true if F is a
+base of pol(IC), where F is a list of functions. weak_base(IC, R) is
+true if R is a weak base of IC which does not contain any redundant
+columns. smallest_co_clone(R1, R2) is true if R2 is a base of the
+smallest co-clone containing R1. There are also a few predicates for
+printing relations of which the most important are write_latex/1, which
+prints its single argument as a pmatrix environment in LaTeX.
+
+The file operators.lgt consists of the
+following two important predicates:
+
+* operator/3.
+* close_relation/3.
+
+operator(F, Args, Res) is true if the function F applied to the
+arguments of Args is Res. close_relation(R, Fs, R1) is true if R1 is
+the smallest superset of R closed under the functions Fs.
+
+6. EXAMPLES
+
+Follow the previous instructions to get everything up and
+running. Many of the predicates can be used both for testing and
+finding solutions. For example, to find a weak base of the co-clone
+BR, one issues the following commands.
+
+[1]  ?- relations::weak_base(br/_, R).
+
+Which gives the solution R =
+[[0,0,0,0,1,1,1,1],[0,0,1,1,0,0,1,1],[0,1,0,1,0,1,0,1]].
+
+If one has a relation and want to find its generating co-clone the
+following command can be issued.
+
+[1]  ?- R1 = [[0,0,1],[0,1,0],[1,0,0],[1,1,0],[1,0,1],[0,1,1]], relations::smallest_co_clone(R1, R2).
+
+Which gives the answer R2 = in2/3, i.e. the set of all Boolean
+relations closed under complement.
+
+7. AUTHORS
+
+Weak Bases was written by Victor Lagerkvist during the spring of 2013
+and 2014.

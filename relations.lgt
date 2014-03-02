@@ -2,10 +2,10 @@
 
    :- public(relation/2).
    :- public(pol/2).
-   :- public(extension/2).
    :- public(reduce/2).
    :- public(weak_base/2).
    :- public(is_minimal/2).
+   :- public(smallest_co_clone/2).
 
    relation(and/2, [[1,1]]).
    relation(xor/2, [[0,1],[1,0]]).
