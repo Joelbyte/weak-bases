@@ -1,8 +1,15 @@
 :- object(relations).
 
+	:- info([
+		version is 1.0,
+		author is 'Victor Lagerkvist',
+		date is 2014/03/03,
+		comment is 'Predicates working on relations.'
+	]).
+
    :- public(relation/2).
    :- public(pol/2).
-   :- public(reduce/2).
+   :- public(reduce/3).
    :- public(weak_base/2).
    :- public(is_minimal/2).
    :- public(smallest_co_clone/2).
@@ -394,8 +401,40 @@
        pol_inf(R, Fs),
 	   operators::closed_relation(Ts, Fs).
 
+   %R is a reduction of R0.
+   reduce(R0, C, R) :-
+       reduce(R0, Xi,Xj,R1),
+       R1 \= R0,
+	   %write('Reduced relation is: '), matrix::write_matrix(R1),nl,
+	   smallest_co_clone(R1, C),
+	   write('Collapsed rows: '), nl,
+	   meta::map([X,Y]>>(write(X), write(' '), write(Y), nl), Xi,Xj), nl,
+	   write('New reduced relation is: '), nl,matrix::write_matrix(R1),nl,
+	   reduce(R1, C, R).
+    reduce(R, _, R).
+
+   reduce_inf(R0, C, R) :-
+       reduce(R0, _, _, R1),
+       R1 \= R0,
+	   %write('Reduced relation is: '), matrix::write_matrix(R1),nl,
+	   smallest_co_clone_inf(R1, C),
+	   reduce_inf(R1, C, R).
+    reduce_inf(R, _, R).
+
+   reduce(R, Xi,Xj,R_red) :-
+	   matrix::remove_duplicate_columns(R, R_red0),
+	   remove_redundant_variables(R_red0, R_red1),
+       matrix::remove_duplicate_rows(R_red1, R_red2),
+	   reduce1(R_red2, Xi,Xj, R_red).
+
+   reduce1(R, _,_,R). 
+   reduce1(R, Xi,Xj,R_red) :-
+	   candidate_variables(R, Xi, Xj),
+	   matrix::collapse_rows(R, Xi, Xj, R_red0),
+	   reduce(R_red0, Xi,Xj, R_red).
+
    smallest_co_clone_inf(Rs0, R) :-
-       reduce(Rs0, Rs),
+       reduce(Rs0, _, _, Rs),
 	   !,
 	   forall((included_inf(R0, R),R0 \= R),
 	          (\+ included2_inf(Rs, R0))).
@@ -465,38 +504,6 @@
 	   matrix::matrix::remove_duplicate_rows(Rs1, Rs2),
 	   ::pol(R, Fs),
 	   operators::close_relation(Rs2, Fs, R_ext).
- 
-   %R is a reduction of R0.
-   reduce(R0, C, R) :-
-       reduce(R0, Xi,Xj,R1),
-       R1 \= R0,
-	   %write('Reduced relation is: '), matrix::write_matrix(R1),nl,
-	   smallest_co_clone(R1, C),
-	   write('Collapsed rows: '), nl,
-	   meta::map([X,Y]>>(write(X), write(' '), write(Y), nl), Xi,Xj), nl,
-	   write('New reduced relation is: '), nl,matrix::write_matrix(R1),nl,
-	   reduce(R1, C, R).
-    reduce(R, _, R).
-
-   reduce_inf(R0, C, R) :-
-       reduce(R0, R1),
-       R1 \= R0,
-	   %write('Reduced relation is: '), matrix::write_matrix(R1),nl,
-	   smallest_co_clone_inf(R1, C),
-	   reduce_inf(R1, C, R).
-    reduce_inf(R, _, R).
-
-   reduce(R, Xi,Xj,R_red) :-
-	   matrix::remove_duplicate_columns(R, R_red0),
-	   remove_redundant_variables(R_red0, R_red1),
-       matrix::remove_duplicate_rows(R_red1, R_red2),
-	   reduce1(R_red2, Xi,Xj, R_red).
-
-   reduce1(R, _,_,R). 
-   reduce1(R, Xi,Xj,R_red) :-
-	   candidate_variables(R, Xi, Xj),
-	   matrix::collapse_rows(R, Xi, Xj, R_red0),
-	   reduce(R_red0, Xi,Xj, R_red).
 
    candidate_variables(R, Xi, Xj) :-
 	   differences(R, Ds),
@@ -537,7 +544,7 @@
    tuples(N, Ts) :-
        setof(T, (length(T, N), matrix::tuple(T)), Ts).
 
-   write_bu_sequence(R) :-
+   write_bu_sequence(R)p :-
 	   write_bu_sequence(2, R).
 
    write_bu_sequence(N, R) :-
@@ -567,7 +574,7 @@
 	   atom_concat('output/seq', N0, Name),
 	   matrix::write_png(R, Name),
 	   matrix::write_matrix(R), nl,
-       reduce(R, Rred),
+       reduce(R, _, _, Rred),
 	   Rred \= R,
 	   !,
 	   N1 is N + 1,
@@ -598,14 +605,3 @@
 	   write('\\]'),
 	   nl.
 :- end_object.
-
-
-
-
-
-
-
-
-
-
-

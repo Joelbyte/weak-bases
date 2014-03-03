@@ -1,5 +1,12 @@
 :- object(matrix).
 
+	:- info([
+		version is 1.0,
+		author is 'Victor Lagerkvist',
+		date is 2014/03/03,
+		comment is 'A collection of matrix predicates.'
+	]).
+
    :- public(add_as_columns/3).
    :- public(remove_duplicate_columns/2).
    :- public(remove_duplicate_rows/2).
@@ -74,6 +81,7 @@
        write_row(R, S), nl(S),
 	   write_png1(Rs, S).
 
+   %Requires matrix2png.
    write_png(Rs, F) :-
        Rs \= [],
        open(F, write, S),

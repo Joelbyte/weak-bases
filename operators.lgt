@@ -1,5 +1,12 @@
 :- object(operators).
 
+	:- info([
+		version is 1.0,
+		author is 'Victor Lagerkvist',
+		date is 2014/03/03,
+		comment is 'Predicates working on operations.'
+	]).
+
    :- public(operator/3).
    :- public(close_relation/3).
    :- public(closed_relation/2).
