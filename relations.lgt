@@ -544,7 +544,7 @@
    tuples(N, Ts) :-
        setof(T, (length(T, N), matrix::tuple(T)), Ts).
 
-   write_bu_sequence(R)p :-
+   write_bu_sequence(R) :-
 	   write_bu_sequence(2, R).
 
    write_bu_sequence(N, R) :-
