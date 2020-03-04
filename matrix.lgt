@@ -1,9 +1,9 @@
 :- object(matrix).
 
 	:- info([
-		version is 1.0,
+		version is 1:0:0,
 		author is 'Victor Lagerkvist',
-		date is 2014/03/03,
+		date is 2014-03-03,
 		comment is 'A collection of matrix predicates.'
 	]).
 
