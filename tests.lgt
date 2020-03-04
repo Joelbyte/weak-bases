@@ -2,9 +2,9 @@
 	extends(lgtunit)).
 
 	:- info([
-		version is 1.0,
+		version is 1:0:0,
 		author is 'Victor Lagerkvist',
-		date is 2014/06/12,
+		date is 2014-06-12,
 		comment is 'Unit tests for the "weak-bases" appliation.'
 	]).
 
